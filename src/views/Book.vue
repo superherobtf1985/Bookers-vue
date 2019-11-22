@@ -1,17 +1,17 @@
 <template>
-  <form id="app" @submit.prevent="addBook">
+  <!-- <form id="app" @submit.prevent="addBook">
     <transition-group name="chat" tag="div" class="list content">
       <section v-for="{ key, name, image, message } in chat" :key="key" class="item">
         <div class="item-image"><img :src="image" width="40" height="40"></div>
         <div class="item-detail">
           <div class="item-name">{{ name }}</div>
           <div class="item-message">
-            <nl2br tag="div" :text="message"/>
+            <div>:text="message"></div>
           </div>
         </div>
       </section>
     </transition-group>
-    
+
     <div class="field row">
       <label for="book_title">Title</label>
       <input type="text" id="book_title" class="col-xs-12 book_body" v-model="title">
@@ -27,12 +27,16 @@
     <div class="actions row">
       <input type="submit" value="Create Book" class="btn btn-primary col-xs-12">
     </div>
-  </form>
+  </form> -->
+  <div class="book">
+    <h1>This is an book page</h1>
+  </div>
 </template>
 
 <script>
-  import Nl2br from 'vue-nl2br'
+  import firebase from '@/plugin/firebase'
   export default {
+    name: 'Book',
     data() {
       return {
         title: "",
@@ -43,6 +47,16 @@
         bodyMessage: "本文が長すぎます",
         books: [],
       }
+    },
+    mounted () {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          console.log('login!!');
+          this.$router.push("/", () => {}, () => {});
+        } else{
+          this.$router.push("signin", () => {}, () => {});
+        }
+      })
     },
     methods: {
       addBook() {
@@ -67,9 +81,3 @@
     }
   }
 </script>
-
-<style>
-  .red {
-    color: red;
-  }
-</style>
