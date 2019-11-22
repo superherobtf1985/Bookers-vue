@@ -24,7 +24,7 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log('login!!');
-        this.$router.push("/", () => {}, () => {});
+        this.$router.push("books", () => {}, () => {});
       } else{
         this.$router.push("signin", () => {}, () => {});
       }

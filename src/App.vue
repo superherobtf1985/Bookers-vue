@@ -1,20 +1,24 @@
 <template>
   <div id="app">
-    <header class="header">
-      <div v-if="user.uid" key="login">
-        <div id="nav">
-          [{{ user.email }}]
-          <router-link to="/users">User</router-link> |
-          <router-link to="/books">Book</router-link> |
-          <a @click="doLogout">Logout</a>
-        </div>
-      </div>
-      <div v-else key="logout">
-        <div id="nav">
-          <router-link to="/">Home</router-link> |
-          <router-link to="/about">About</router-link> |
-          <router-link to="/signin">Login</router-link>
-        </div>
+    <header class="navbar navbar-dark bg-dark">
+      <div class="container">
+        <nav>
+          <span class="user-name">{{ user.email }}</span>
+        </nav>
+        <nav v-if="user.uid" key="login">
+          <ul>
+            <li class="nav-item"><router-link to="/users" class="nav-link">User</router-link></li>
+            <li class="nav-item"><router-link to="/books" class="nav-link">Book</router-link></li>
+            <li class="nav-item"><a @click="doLogout" class="nav-link logout" style="color:#007bff;">Logout</a></li>
+          </ul>
+        </nav>
+        <nav v-else key="logout">
+          <ul>
+            <li class="nav-item"><router-link to="/" class="nav-link">Home</router-link></li>
+            <li class="nav-item"><router-link to="/about" class="nav-link">About</router-link></li>
+            <li class="nav-item"><router-link to="/signin" class="nav-link">Login</router-link></li>
+          </ul>
+        </nav>
       </div>
     </header>
     <router-view/>
@@ -47,34 +51,22 @@ export default {
     margin: 0;
     box-sizing: border-box;
   }
-  .header {
-    margin-bottom: 1em;
-    padding: 0.4em 0.8em;
-    color: #fff;
+  nav > ul {
+    list-style: none;
   }
-  #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  nav > ul > li {
+    display: inline-block;
   }
-  #nav a {
-    font-weight: bold;
-    color: #2c3e50;
-    text-decoration: none;
+  .user-name {
+    color: white;
   }
-  #nav a.router-link-exact-active {
-    color: #42b983;
+  .logout {
+    cursor: pointer;
   }
   .router-link-exact-active {
-    font-size: 30px;
     color: deeppink;
   }
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity 0.5s;
-  }
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
+  footer .row {
+    text-align: right;
   }
 </style>

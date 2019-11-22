@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import BootstrapVue from 'bootstrap-vue'
 import Home from '../views/Home.vue'
 import Signup from '@/views/Signup'
 import Signin from '@/views/Signin'
@@ -7,6 +8,10 @@ import Book from '@/views/Book'
 import User from '@/views/User'
 
 Vue.use(VueRouter)
+Vue.use(BootstrapVue)
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 const routes = [
   {
