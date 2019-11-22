@@ -1,35 +1,47 @@
 <template>
-  <!-- <form id="app" @submit.prevent="addBook">
-    <transition-group name="chat" tag="div" class="list content">
-      <section v-for="{ key, name, image, message } in chat" :key="key" class="item">
-        <div class="item-image"><img :src="image" width="40" height="40"></div>
-        <div class="item-detail">
-          <div class="item-name">{{ name }}</div>
-          <div class="item-message">
-            <div>:text="message"></div>
-          </div>
-        </div>
-      </section>
-    </transition-group>
+  <div class="row">
+    <h2>Books</h2>
+    <table class="table table-hover table-inverse">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Title</th>
+          <th>Opinion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(book, key) in books" :key="key">
+          <td></td>
+          <td>{{ book.title }}</td>
+          <td>{{ book.body }}</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <div class="field row">
-      <label for="book_title">Title</label>
-      <input type="text" id="book_title" class="col-xs-12 book_body" v-model="title">
-      <p :class="{ red: isInvalidTitle }">{{ title.length }} / 10</p>
-    </div>
+    <form id="app" @submit.prevent="addBook">
+      <p v-if="isInvalidTitle" style="color: orange;">
+        {{ titleMessage }}
+      </p>
 
-    <div class="field row">
-      <label for="book_body">body</label>
-      <input type="text" id="book_body" class="col-xs-12 book_title" v-model="body">
-      <p :class="{ red: isInvalidBody }">{{ body.length }} / 20</p>
-    </div>
+      <p v-if="isInvalidBody" style="color: orange;">
+        {{ bodyMessage }}
+      </p>
+      <div class="field row">
+        <label for="book_title">Title</label>
+        <input type="text" id="book_title" v-model="title">
+        <p :class="{ red: isInvalidTitle }">{{ title.length }} / 10</p>
+      </div>
 
-    <div class="actions row">
-      <input type="submit" value="Create Book" class="btn btn-primary col-xs-12">
-    </div>
-  </form> -->
-  <div class="book">
-    <h1>This is an book page</h1>
+      <div class="field row">
+        <label for="book_body">body</label>
+        <input type="text" id="book_body" v-model="body">
+        <p :class="{ red: isInvalidBody }">{{ body.length }} / 20</p>
+      </div>
+
+      <div class="actions row">
+        <input type="submit" value="Create Book" class="btn btn-primary col-xs-12">
+      </div>
+    </form>
   </div>
 </template>
 
@@ -45,10 +57,23 @@
         isInvalidBody: false,
         titleMessage: "タイトルが長すぎます",
         bodyMessage: "本文が長すぎます",
-        books: [],
+        book: null,
+        db: null,
+        books: {},
       }
     },
-    mounted () {
+    created() {
+      this.db = firebase.firestore()
+      this.book = this.db.collection('books')
+      this.book.onSnapshot(querySnapshot => {
+        const obj = {}
+        querySnapshot.forEach(doc => {
+          obj[doc.id] = doc.data()
+        })
+        this.books = obj
+      })
+    },
+    mounted() {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           console.log('login!!');
@@ -60,12 +85,10 @@
     },
     methods: {
       addBook() {
-        if (this.isInvalidTitle || this.isInvalidBody || !this.title.length || !this.body.length) {
-          return
-        }
-        this.books.push({
+        if (this.title === '' || this.body === '' || this.isInvalidTitle || this.isInvalidBody) { return }
+        this.book.add({
           title: this.title,
-          body: this.body
+          body: this.body,
         })
         this.title= ""
         this.body = ""
