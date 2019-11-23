@@ -1,5 +1,6 @@
 <template>
   <form id="app" @submit.prevent="addBook">
+    <h2>New book</h2>
     <p v-if="isInvalidTitle" style="color: orange;">
       {{ titleMessage }}
     </p>
@@ -8,19 +9,19 @@
       {{ bodyMessage }}
     </p>
     <div class="field row">
-      <label for="book_title">Title</label>
-      <input type="text" id="book_title" v-model="title">
-      <p :class="{ red: isInvalidTitle }">{{ title.length }} / 10</p>
+      <label for="book_title" class="col-2">Title</label>
+      <input type="text" id="book_title" v-model="title" class="col-6">
+      <p :class="{ red: isInvalidTitle }" class="col-2">{{ title.length }} / 10</p>
     </div>
 
     <div class="field row">
-      <label for="book_body">body</label>
-      <input type="text" id="book_body" v-model="body">
-      <p :class="{ red: isInvalidBody }">{{ body.length }} / 20</p>
+      <label for="book_body" class="col-2">body</label>
+      <input type="text" id="book_body" v-model="body" class="col-6">
+      <p :class="{ red: isInvalidBody }" class="col-2">{{ body.length }} / 20</p>
     </div>
 
     <div class="actions row">
-      <input type="submit" value="Create Book" class="btn btn-primary col-xs-12">
+      <input type="submit" value="Create Book" class="btn btn-primary col-9">
     </div>
   </form>
 </template>
@@ -41,23 +42,19 @@
         book: null,
       }
     },
-    mounted() {
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          console.log('login!!');
-          this.$router.push("books", () => {}, () => {});
-        } else{
-          this.$router.push("signin", () => {}, () => {});
-        }
-      })
-    },
     methods: {
       addBook() {
         if (this.title === '' || this.body === '' || this.isInvalidTitle || this.isInvalidBody) { return }
-        this.book.add({
+        // this.book.user = this.$store.user
+        this.book
+        .add({
           title: this.title,
           body: this.body,
         })
+        // .then(docRef => {
+        //   this.bookRef = getBooks();
+        // })
+        // .catch(error => console.log(error));
         this.title= ""
         this.body = ""
       },
@@ -76,3 +73,9 @@
     }
   }
 </script>
+
+<style>
+  .field {
+    margin: 10px 0;
+  }
+</style>

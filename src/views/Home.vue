@@ -7,7 +7,7 @@
       <p> about varioius books!</p>
       <div class="btn-wrapper">
         <div class="row">
-          <router-link to="signin" class="btn btn-info col">Log in</router-link>
+          <router-link to="signin" class="btn btn-info col">Sign in</router-link>
           <router-link to="signup" class="btn btn-info col">Sign up</router-link>
         </div>
       </div>
