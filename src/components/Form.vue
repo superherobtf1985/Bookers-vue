@@ -40,6 +40,7 @@
         bodyMessage: "本文が長すぎます",
         db: null,
         book: null,
+        user: null,
       }
     },
     methods: {
@@ -51,10 +52,6 @@
           title: this.title,
           body: this.body,
         })
-        // .then(docRef => {
-        //   this.bookRef = getBooks();
-        // })
-        // .catch(error => console.log(error));
         this.title= ""
         this.body = ""
       },
