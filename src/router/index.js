@@ -4,6 +4,7 @@ import BootstrapVue from 'bootstrap-vue'
 import Home from '../views/Home.vue'
 import Signup from '@/views/Signup'
 import Signin from '@/views/Signin'
+import Books from '@/views/Books'
 import Book from '@/views/Book'
 import User from '@/views/User'
 
@@ -39,13 +40,21 @@ const routes = [
   },
   {
     path: '/books',
-    name: 'Book',
-    component: Book
+    component: Books,
+  },
+  {
+    path: '/book',
+    props: true,
+    component: Book,
   },
   {
     path: '/users',
     name: 'User',
     component: User
+  },
+  {
+    path: '*',
+    redirect: "/"
   }
 ]
 
