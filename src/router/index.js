@@ -6,6 +6,7 @@ import Signup from '@/views/Signup'
 import Signin from '@/views/Signin'
 import Books from '@/views/Books'
 import Book from '@/views/Book'
+import Users from '@/views/Users'
 import User from '@/views/User'
 
 Vue.use(VueRouter)
@@ -41,16 +42,24 @@ const routes = [
   {
     path: '/books',
     component: Books,
+    name: 'Books',
   },
   {
-    path: '/book',
+    path: '/book/:id',
     props: true,
     component: Book,
+    name: 'Book'
   },
   {
     path: '/users',
+    name: 'Users',
+    component: Users
+  },
+  {
+    path: '/users/:id',
     name: 'User',
-    component: User
+    component: User,
+    props: true
   },
   {
     path: '*',

@@ -17,7 +17,7 @@
         <tbody>
           <tr v-for="(book, key) in books" :key="key">
             <td></td>
-            <td><router-link to="/">{{ book.title }}</router-link></td>
+            <td><router-link :to="{ name: 'Book', params: { id: key }}">{{ book.title }}</router-link></td>
             <td>{{ book.body }}</td>
           </tr>
         </tbody>
@@ -30,11 +30,19 @@
   import firebase from '@/plugin/firebase'
   import Form from '@/components/Form'
   import Profile from '@/components/Profile'
+
   export default {
     name: 'Books',
     components: {
       Form,
       Profile,
+    },
+    data() {
+      return {
+        book: null,
+        db: null,
+        books: {},
+      }
     },
     created() {
       this.db = firebase.firestore()
@@ -56,13 +64,6 @@
           this.$router.push("signin", () => {}, () => {});
         }
       })
-    },
-    data() {
-      return {
-        book: null,
-        db: null,
-        books: {},
-      }
     },
   }
 </script>
