@@ -38,6 +38,7 @@
     methods: {
       doLogout() {
         firebase.auth().signOut()
+        this.$router.push({ path: "/"})
       },
     }
   }

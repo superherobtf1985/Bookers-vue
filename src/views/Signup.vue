@@ -17,8 +17,14 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      user: null,
+      db: null,
     }
+  },
+  created() {
+    this.db = firebase.firestore()
+    this.user = this.db.collection('users')
   },
   methods: {
     signUp: function() {
@@ -30,6 +36,10 @@ export default {
         .catch(error => {
           alert(error.message)
         })
+      this.user
+      .add({
+        email: this.username,
+      })
     }
   }
 }

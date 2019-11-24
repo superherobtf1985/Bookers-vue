@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-5">
       <Profile></Profile>
-      <Form></Form>
+      <Form :uid="uid"></Form>
     </div>
     <div class="col-7">
       <h2>Users</h2>
@@ -15,9 +15,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(book, key) in books" :key="key">
+          <tr v-for="(user, key) in users" :key="key">
             <td></td>
-            <td>{{ book.title }}</td>
+            <td>{{ user.email }}</td>
             <td><router-link :to="{ name: 'User', params: {id: key}}">Show</router-link></td>
           </tr>
         </tbody>
@@ -39,23 +39,15 @@
     },
     data() {
       return {
-        book: null,
         user: null,
         db: null,
         books: {},
         users: {},
+        uid: null,
       }
     },
     created() {
       this.db = firebase.firestore()
-      this.book = this.db.collection('books')
-      this.book.onSnapshot(querySnapshot => {
-        const obj = {}
-        querySnapshot.forEach(doc => {
-          obj[doc.id] = doc.data()
-        })
-        this.books = obj
-      })
       this.user = this.db.collection('users')
       this.user.onSnapshot(querySnapshot => {
         const obj = {}
@@ -64,6 +56,12 @@
         })
         this.users = obj
       })
+      let self = this
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          self.uid = user.uid
+        }
+      });
     },
   }
 </script>
