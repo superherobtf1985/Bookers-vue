@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-5">
       <Profile></Profile>
-      <Form></Form>
+      <Form :uid="uid"></Form>
     </div>
     <div class="col-7">
       <h2>Books</h2>
@@ -17,7 +17,12 @@
         <tbody>
           <tr v-for="(book, key) in books" :key="key">
             <td></td>
-            <td><router-link :to="{ name: 'Book', params: { id: key }}">{{ book.title }}</router-link></td>
+            <td>
+              <router-link :to="{
+                name: 'Book',
+                params: { id: key }
+              }">{{ book.title }}</router-link>
+            </td>
             <td>{{ book.body }}</td>
           </tr>
         </tbody>
@@ -42,6 +47,7 @@
         book: null,
         db: null,
         books: {},
+        uid: null,
       }
     },
     created() {
@@ -54,6 +60,12 @@
         })
         this.books = obj
       })
+      let self = this
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          self.uid = user.uid
+        }
+      });
     },
     mounted() {
       firebase.auth().onAuthStateChanged((user) => {
