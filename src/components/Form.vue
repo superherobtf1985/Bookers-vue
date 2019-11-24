@@ -40,7 +40,7 @@
         bodyMessage: "本文が長すぎます",
         db: null,
         book: null,
-        user: null,
+        uid: null,
       }
     },
     methods: {
@@ -51,6 +51,7 @@
         .add({
           title: this.title,
           body: this.body,
+          uid: this.uid,
         })
         this.title= ""
         this.body = ""
@@ -59,6 +60,12 @@
     created() {
       this.db = firebase.firestore()
       this.book = this.db.collection('books')
+      let self = this
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          self.uid = user.uid
+        }
+      });
     },
     watch: {
       title: function(newValue) {
