@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-5">
       <Profile></Profile>
-      <Form></Form>
+      <Form :uid="current_uid"></Form>
     </div>
     <div class="col-7">
       <h2>Books</h2>
@@ -19,8 +19,12 @@
             <td></td>
             <td>{{ book.title }}</td>
             <td>{{ book.body }}</td>
-            <td><button class="btn btn-primary">Edit</button></td>
-            <td><button class="btn btn-danger">Delete</button></td>
+            <td v-if="isCurrentUser">
+              <button class="btn btn-primary">Edit</button>
+            </td>
+            <td v-if="isCurrentUser">
+              <button class="btn btn-danger">Delete</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -43,17 +47,23 @@ export default {
   data() {
     return {
       book: null,
-      user: null,
       db: null,
-      users: {},
+      current_uid: null,
+      isCurrentUser: false,
     }
   },
   created() {
+    let self = this
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        self.current_uid = user.uid
+      }
+    });
     this.db = firebase.firestore()
     let bookDocRef = this.db.collection('books').doc(this.id)
     bookDocRef.get().then((doc) => {
       this.book = doc.data()
-      this.book.book_id = doc.id
+      this.isCurrentUser = this.current_uid === this.book.uid ? true : false
     })
   },
 }
