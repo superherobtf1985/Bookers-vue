@@ -17,14 +17,21 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      user: null,
+      db: null,
     }
   },
   methods: {
     signUp: function() {
       firebase.auth().createUserWithEmailAndPassword(this.username, this.password)
         .then(user => {
-          alert('Create account: ', user.email)
+          alert("Create account!")
+          let newUser = {
+            uid: user.user.uid,
+            email: this.username
+          }
+          firebase.firestore().collection('users').doc(user.user.uid).set(newUser)
           this.$router.push("books", () => {}, () => {});
         })
         .catch(error => {
