@@ -6,11 +6,11 @@
         <tr></tr>
         <tr>
           <th>id</th>
-          <th>{{ uid }}</th>
+          <th>{{ user.uid }}</th>
         </tr>
         <tr>
           <th>email</th>
-          <th>{{ email }}</th>
+          <th>{{ user.email }}</th>
         </tr>
       </tbody>
     </table>
@@ -26,6 +26,7 @@
         uid: null,
       }
     },
+    props: ["user"],
     mounted() {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {

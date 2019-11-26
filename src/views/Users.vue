@@ -1,8 +1,8 @@
 <template>
   <div class="row">
     <div class="col-5">
-      <Profile></Profile>
-      <Form :uid="uid"></Form>
+      <Profile :user="user"></Profile>
+      <Form :uid="user.uid"></Form>
     </div>
     <div class="col-7">
       <h2>Users</h2>
@@ -39,16 +39,12 @@
     },
     data() {
       return {
-        user: null,
-        db: null,
-        books: {},
+        user: {},
         users: {},
-        uid: null,
       }
     },
     created() {
-      this.db = firebase.firestore()
-      this.user = this.db.collection('users')
+      this.user = firebase.firestore().collection('users')
       this.user.onSnapshot(querySnapshot => {
         const obj = {}
         querySnapshot.forEach(doc => {
@@ -59,7 +55,7 @@
       let self = this
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-          self.uid = user.uid
+          self.user = user
         }
       });
     },

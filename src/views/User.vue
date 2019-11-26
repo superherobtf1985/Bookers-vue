@@ -1,8 +1,8 @@
 <template>
   <div class="row">
     <div class="col-5">
-      <Profile></Profile>
-      <Form></Form>
+      <Profile :user="userRef"></Profile>
+      <Form :uid="user.uid"></Form>
     </div>
     <div class="col-7">
       <h2>Books</h2>
@@ -17,7 +17,12 @@
         <tbody>
           <tr v-for="(book, key) in books" :key="key">
             <td></td>
-            <td><router-link to="/">{{ book.title }}</router-link></td>
+            <td>
+              <router-link :to="{
+                name: 'Book',
+                params: { id: key }
+              }">{{ book.title }}</router-link>
+            </td>
             <td>{{ book.body }}</td>
           </tr>
         </tbody>
@@ -40,17 +45,25 @@ export default {
   props: ['id'],
   data() {
     return {
-      book: null,
-      user: null,
-      db: null,
+      user: {},
       books: {},
       users: {},
+      userRef: {},
     }
   },
   created() {
-    this.db = firebase.firestore()
-    this.book = this.db.collection('books')
-    this.book.onSnapshot(querySnapshot => {
+    let self = this
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        self.user = user
+      }
+    });
+    firebase.firestore().collection('users').doc(this.id).get()
+    .then(doc => {
+      this.userRef = doc.data()
+    })
+    firebase.firestore().collection('books').where('uid', '==', this.id).get()
+    .then(querySnapshot => {
       const obj = {}
       querySnapshot.forEach(doc => {
         obj[doc.id] = doc.data()

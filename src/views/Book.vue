@@ -1,8 +1,8 @@
 <template>
   <div class="row">
     <div class="col-5">
-      <Profile></Profile>
-      <Form :uid="current_uid"></Form>
+      <Profile :user="userRef"></Profile>
+      <Form :uid="book.uid"></Form>
     </div>
     <div class="col-7">
       <h2>Books</h2>
@@ -23,7 +23,7 @@
               <button class="btn btn-primary">Edit</button>
             </td>
             <td v-if="isCurrentUser">
-              <button class="btn btn-danger">Delete</button>
+              <button class="btn btn-danger" @click="deleteBook">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -36,6 +36,7 @@
 import firebase from '@/plugin/firebase'
 import Form from '@/components/Form'
 import Profile from '@/components/Profile'
+import router from '@/router/index'
 
 export default {
   name: 'Book',
@@ -46,25 +47,40 @@ export default {
   props: ['id'],
   data() {
     return {
-      book: null,
+      book: {},
       db: null,
       current_uid: null,
       isCurrentUser: false,
+      userRef: {},
     }
   },
   created() {
-    let self = this
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        self.current_uid = user.uid
-      }
-    });
     this.db = firebase.firestore()
     let bookDocRef = this.db.collection('books').doc(this.id)
     bookDocRef.get().then((doc) => {
       this.book = doc.data()
-      this.isCurrentUser = this.current_uid === this.book.uid ? true : false
+      var self = this
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          self.isCurrentUser = (user.uid == self.book.uid) ? true : false
+        }
+      });
+      this.db.collection('users').doc(this.book.uid).get()
+      .then(doc => {
+        self.userRef = doc.data()
+      })
     })
   },
+  methods: {
+    deleteBook: function() {
+      this.db.collection("books").doc(this.id).delete()
+      .then(function() {
+        alert("book successfully deleted!");
+        // router.push("Users", () => {}, () => {});
+      }).catch(error => {
+        alert(error.message)
+      });
+    }
+  }
 }
 </script>
