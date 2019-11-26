@@ -20,7 +20,13 @@
             <td>{{ book.title }}</td>
             <td>{{ book.body }}</td>
             <td v-if="isCurrentUser">
-              <button class="btn btn-primary">Edit</button>
+              <router-link
+              tag="button"
+              :to="{
+                name: 'BookEdit',
+                params: { book: book }
+              }"
+              class="btn btn-primary">Edit</router-link>
             </td>
             <td v-if="isCurrentUser">
               <button class="btn btn-danger" @click="deleteBook">Delete</button>
@@ -36,7 +42,6 @@
 import firebase from '@/plugin/firebase'
 import Form from '@/components/Form'
 import Profile from '@/components/Profile'
-import router from '@/router/index'
 
 export default {
   name: 'Book',
@@ -76,7 +81,6 @@ export default {
       this.db.collection("books").doc(this.id).delete()
       .then(function() {
         alert("book successfully deleted!");
-        // router.push("Users", () => {}, () => {});
       }).catch(error => {
         alert(error.message)
       });

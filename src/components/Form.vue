@@ -43,6 +43,10 @@
       }
     },
     props: ['uid'],
+    created() {
+      this.db = firebase.firestore()
+      this.book = this.db.collection('books')
+    },
     methods: {
       addBook() {
         if (this.title === '' || this.body === '' || this.isInvalidTitle || this.isInvalidBody) { return }
@@ -55,10 +59,6 @@
         this.title= ""
         this.body = ""
       },
-    },
-    created() {
-      this.db = firebase.firestore()
-      this.book = this.db.collection('books')
     },
     watch: {
       title: function(newValue) {
