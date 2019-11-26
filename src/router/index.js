@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
-import Home from '../views/Home.vue'
+import Home from '../views/home/Home.vue'
 import Signup from '@/views/Signup'
 import Signin from '@/views/Signin'
-import Books from '@/views/Books'
-import Book from '@/views/Book'
-import Users from '@/views/Users'
-import User from '@/views/User'
+import Books from '@/views/book/Books'
+import Book from '@/views/book/Book'
+import BookEdit from '@/views/book/BookEdit'
+import Users from '@/views/user/Users'
+import User from '@/views/user/User'
 
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
@@ -27,7 +28,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/home/About.vue')
   },
   {
     path: '/signup',
@@ -45,10 +46,16 @@ const routes = [
     name: 'Books',
   },
   {
-    path: '/book/:id',
+    path: '/books/:id',
     props: true,
     component: Book,
     name: 'Book'
+  },
+  {
+    path: '/books/:id/edit',
+    props: true,
+    component: BookEdit,
+    name: 'BookEdit'
   },
   {
     path: '/users',
@@ -57,9 +64,9 @@ const routes = [
   },
   {
     path: '/users/:id',
+    props: true,
     name: 'User',
     component: User,
-    props: true
   },
   {
     path: '*',
