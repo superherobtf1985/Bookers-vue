@@ -9,6 +9,7 @@ import Book from '@/views/book/Book'
 import BookEdit from '@/views/book/BookEdit'
 import Users from '@/views/user/Users'
 import User from '@/views/user/User'
+import UserEdit from '@/views/user/UserEdit'
 
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
@@ -67,6 +68,12 @@ const routes = [
     props: true,
     name: 'User',
     component: User,
+  },
+  {
+    path: '/users/:id/edit',
+    props: true,
+    name: 'UserEdit',
+    component: UserEdit,
   },
   {
     path: '*',

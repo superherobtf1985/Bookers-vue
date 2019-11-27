@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <form @submit.prevent="editBook">
+    <form @submit.prevent="editBook" class="col-6">
       <h1>Editing Book</h1>
       <p v-if="isInvalidTitle" style="color: orange;">
         {{ titleMessage }}
@@ -30,11 +30,11 @@ import firebase from '@/plugin/firebase'
 
 export default {
   name: 'BookEdit',
-  props: ['book'],
+  props: ['id', 'book'],
   data() {
     return {
-      title: "",
-      body: "",
+      title: this.book.title,
+      body: this.book.body,
       isInvalidTitle: false,
       isInvalidBody: false,
       titleMessage: "タイトルが長すぎます",
@@ -44,15 +44,14 @@ export default {
   methods: {
     editBook() {
       if (this.title === '' || this.body === '' || this.isInvalidTitle || this.isInvalidBody) { return }
-      let bookDocRef = firebase.firestore().collection('books').doc(this.book)
+      let bookDocRef = firebase.firestore().collection('books').doc(this.id)
       bookDocRef.update({
         title: this.title,
         body: this.body,
         uid: this.book.uid
       })
       alert('edit book!!')
-      this.title= ""
-      this.body = ""
+      this.$router.push("/books");
     }
   },
   watch: {
@@ -65,3 +64,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  form {
+    margin-left: 25%;
+  }
+</style>
