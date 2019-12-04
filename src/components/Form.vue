@@ -1,5 +1,5 @@
 <template>
-  <form id="app" @submit.prevent="addBook">
+  <form id="app" @submit.prevent="addBook" style="margin-left: 0;">
     <h2>New book</h2>
     <p v-if="isInvalidTitle" style="color: orange;">
       {{ titleMessage }}

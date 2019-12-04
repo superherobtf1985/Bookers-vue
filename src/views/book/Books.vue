@@ -16,7 +16,7 @@
         </thead>
         <tbody>
           <tr v-for="(book, key) in books" :key="key">
-            <td></td>
+            <td><img :src="placeholder" class="default_image"></td>
             <td>
               <router-link :to="{
                 name: 'Book',
@@ -47,6 +47,7 @@
         book: null,
         books: {},
         user: {},
+        placeholder: require("../../assets/kitten.jpg")
       }
     },
     created() {
@@ -76,3 +77,11 @@
     },
   }
 </script>
+
+<style>
+.default_image {
+  width: 50px;
+  height: 50px;
+  border-radius: 30px;
+}
+</style>

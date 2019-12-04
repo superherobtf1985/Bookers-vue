@@ -3,7 +3,9 @@
     <h2>User Info</h2>
     <table class="table">
       <tbody>
-        <tr></tr>
+        <tr>
+          <th><img :src="placeholder" class="profile_image"></th>
+        </tr>
         <tr>
           <th>id</th>
           <th>{{ user.uid }}</th>
@@ -24,6 +26,7 @@
       return {
         email: null,
         uid: null,
+        placeholder: require("../assets/kitten.jpg")
       }
     },
     props: ["user"],
@@ -37,3 +40,11 @@
     },
   }
 </script>
+
+<style>
+.profile_image {
+  width: 100px;
+  height: 100px;
+}
+</style>
+
